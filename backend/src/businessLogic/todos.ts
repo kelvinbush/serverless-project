@@ -28,5 +28,5 @@ export const createTodo = (userId: string, todoRequest: CreateTodoRequest): Prom
   })
 };
 
-export const generateUploadUrl = async (todoId: string): Promise<string> => todoAccess.generateUploadUrl(todoId);
+export const createAttachmentPresignedUrl = async (todoId: string): Promise<string> => todoAccess.generateUploadUrl(todoId);
 
