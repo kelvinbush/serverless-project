@@ -7,7 +7,7 @@ import {TodosAccess} from "../helpers/todosAcess";
 
 const todoAccess = new TodosAccess()
 
-export const getTodos = async (userId: string): Promise<TodoItem[]> => todoAccess.getTodos(userId);
+export const getTodosForUser = async (userId: string): Promise<TodoItem[]> => todoAccess.getTodos(userId);
 
 export const deleteTodo = async (userId: string, todoId: string): Promise<void> => todoAccess.deleteTodo(userId, todoId);
 
