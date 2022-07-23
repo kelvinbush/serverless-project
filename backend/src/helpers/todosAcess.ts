@@ -7,7 +7,6 @@ import {TodoUpdate} from "../models/TodoUpdate";
 
 // @ts-ignore
 const XAWS = AWSXRay.captureAWS(AWS)
-// @ts-ignore
 const logger = createLogger('TodosAccess')
 
 export class TodosAccess {
@@ -20,6 +19,7 @@ export class TodosAccess {
   }
   
   async createTodo(todoItem: TodoItem): Promise<TodoItem> {
+    logger.info('Creating todo')
     await this.docClient.put({
       TableName: this.todoTable,
       Item: todoItem
@@ -28,6 +28,7 @@ export class TodosAccess {
   }
   
   async getTodos(userId: string): Promise<TodoItem[]> {
+    logger.info('getting todos')
     const queryParams = {
       TableName: this.todoTable,
       KeyConditionExpression: "userId = :userId",
@@ -41,6 +42,7 @@ export class TodosAccess {
   }
   
   async updateTodo(todoUpdate: TodoUpdate, userId: string, todoId: string): Promise<TodoUpdate> {
+    logger.info('Updating todo')
     const updateParams = {
       TableName: this.todoTable,
       Key: {
@@ -65,6 +67,7 @@ export class TodosAccess {
   }
   
   async deleteTodo(userId: string, todoId: string): Promise<void> {
+    logger.info('deleting todo')
     await this.docClient.delete({
       TableName: this.todoTable,
       Key: {
@@ -75,6 +78,7 @@ export class TodosAccess {
   }
   
   async generateUploadUrl(todoId: string): Promise<string> {
+    logger.info('generating upload url')
     return this.s3.getSignedUrl("putObject", {
       Bucket: this.bucketName,
       Key: todoId,
