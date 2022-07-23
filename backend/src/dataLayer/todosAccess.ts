@@ -12,9 +12,9 @@ const logger = createLogger('TodosAccess')
 export class TodosAccess {
   constructor(
     private readonly todoTable = process.env.TODOS_TABLE,
-    private readonly bucketName = process.env.S3_BUCKET_NAME,
+    private readonly bucketName = process.env.ATTACHMENT_S3_BUCKET,
     private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient(),
-    private readonly s3 = new AWS.S3({signatureVersion: "v4"})
+    private readonly s3 = new XAWS.S3({signatureVersion: "v4"})
   ) {
   }
   

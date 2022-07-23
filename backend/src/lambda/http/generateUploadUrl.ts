@@ -9,7 +9,7 @@ import {createAttachmentPresignedUrl} from '../../businessLogic/todos'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
-    const url = createAttachmentPresignedUrl(todoId)
+    const url = await createAttachmentPresignedUrl(todoId)
     
     return {
       statusCode: 200,

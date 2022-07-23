@@ -1,22 +1,12 @@
 import dateFormat from 'dateformat'
-import { History } from 'history'
+import {History} from 'history'
 import update from 'immutability-helper'
 import * as React from 'react'
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Input,
-  Image,
-  Loader
-} from 'semantic-ui-react'
+import {Button, Checkbox, Divider, Grid, Header, Icon, Image, Input, Loader} from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import {createTodo, deleteTodo, getTodos, patchTodo} from '../api/todos-api'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/Todo'
+import {Todo} from '../types/Todo'
 
 interface TodosProps {
   auth: Auth
@@ -35,15 +25,15 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     newTodoName: '',
     loadingTodos: true
   }
-
+  
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newTodoName: event.target.value })
+    this.setState({newTodoName: event.target.value})
   }
-
+  
   onEditButtonClick = (todoId: string) => {
     this.props.history.push(`/todos/${todoId}/edit`)
   }
-
+  
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
       const dueDate = this.calculateDueDate()
@@ -55,11 +45,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         todos: [...this.state.todos, newTodo],
         newTodoName: ''
       })
-    } catch {
+    } catch(e:any) {
       alert('Todo creation failed')
     }
   }
-
+  
   onTodoDelete = async (todoId: string) => {
     try {
       await deleteTodo(this.props.auth.getIdToken(), todoId)
@@ -70,7 +60,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       alert('Todo deletion failed')
     }
   }
-
+  
   onTodoCheck = async (pos: number) => {
     try {
       const todo = this.state.todos[pos]
@@ -81,14 +71,14 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       })
       this.setState({
         todos: update(this.state.todos, {
-          [pos]: { done: { $set: !todo.done } }
+          [pos]: {done: {$set: !todo.done}}
         })
       })
     } catch {
       alert('Todo deletion failed')
     }
   }
-
+  
   async componentDidMount() {
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
@@ -96,23 +86,23 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         todos,
         loadingTodos: false
       })
-    } catch (e) {
+    } catch (e: any) {
       alert(`Failed to fetch todos: ${e.message}`)
     }
   }
-
+  
   render() {
     return (
       <div>
         <Header as="h1">TODOs</Header>
-
+        
         {this.renderCreateTodoInput()}
-
+        
         {this.renderTodos()}
       </div>
     )
   }
-
+  
   renderCreateTodoInput() {
     return (
       <Grid.Row>
@@ -137,15 +127,15 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       </Grid.Row>
     )
   }
-
+  
   renderTodos() {
     if (this.state.loadingTodos) {
       return this.renderLoading()
     }
-
+    
     return this.renderTodosList()
   }
-
+  
   renderLoading() {
     return (
       <Grid.Row>
@@ -155,11 +145,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       </Grid.Row>
     )
   }
-
+  
   renderTodosList() {
     return (
       <Grid padded>
-        {this.state.todos.map((todo, pos) => {
+        {this.state.todos && this.state.todos.map((todo, pos) => {
           return (
             <Grid.Row key={todo.todoId}>
               <Grid.Column width={1} verticalAlign="middle">
@@ -204,11 +194,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       </Grid>
     )
   }
-
+  
   calculateDueDate(): string {
     const date = new Date()
     date.setDate(date.getDate() + 7)
-
+    
     return dateFormat(date, 'yyyy-mm-dd') as string
   }
 }

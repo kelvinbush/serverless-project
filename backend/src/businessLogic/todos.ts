@@ -1,9 +1,8 @@
 import {TodoItem} from '../models/TodoItem'
-import {parseUserId} from "../auth/utils";
 import {TodoUpdate} from "../models/TodoUpdate";
 import {CreateTodoRequest} from "../requests/CreateTodoRequest";
 import * as uuid from 'uuid'
-import {TodosAccess} from "../helpers/todosAcess";
+import {TodosAccess} from "../dataLayer/todosAccess";
 
 const todoAccess = new TodosAccess()
 
@@ -17,7 +16,7 @@ export const updateTodo = async (userId: string, todoId: string, todoUpdate: Tod
 
 export const createTodo = (userId: string, todoRequest: CreateTodoRequest): Promise<TodoItem> => {
   const todoId = uuid.v4()
-  const bucketName = process.env.S3_BUCKET_NAME;
+  const bucketName = process.env.ATTACHMENT_S3_BUCKET;
   return todoAccess.createTodo({
     userId,
     todoId,

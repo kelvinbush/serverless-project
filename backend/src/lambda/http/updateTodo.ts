@@ -12,7 +12,7 @@ export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
-    const updatedItem = updateTodo(getUserId(event), todoId, updatedTodo)
+    const updatedItem = await updateTodo(getUserId(event), todoId, updatedTodo)
     
     return {
       statusCode: 201,
